@@ -15,8 +15,8 @@ text-align:center;
 }
 
 h1{
-margin-top:50px;
-font-size:38px;
+margin-top:40px;
+font-size:36px;
 }
 
 p{
@@ -24,17 +24,15 @@ color:#94a3b8;
 }
 
 .clock{
-font-size:18px;
 margin-top:10px;
 }
 
 .search{
-margin-top:20px;
+margin-top:15px;
 }
 
 input{
 padding:10px;
-width:250px;
 border-radius:6px;
 border:none;
 }
@@ -50,22 +48,21 @@ cursor:pointer;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
 gap:20px;
 max-width:800px;
 margin:40px auto;
-padding:20px;
 }
 
 .card{
 background:#1e293b;
-padding:25px;
+padding:20px;
 border-radius:10px;
 transition:0.2s;
 }
 
 .card:hover{
-transform:translateY(-5px);
+transform:translateY(-4px);
 background:#334155;
 }
 
@@ -77,8 +74,8 @@ font-size:18px;
 
 .monitor{
 margin-top:20px;
-color:#22c55e;
 font-family:monospace;
+color:#22c55e;
 }
 
 .terminal{
@@ -90,6 +87,23 @@ max-width:600px;
 font-family:monospace;
 text-align:left;
 border-radius:10px;
+}
+
+.chat{
+background:#1e293b;
+max-width:600px;
+margin:40px auto;
+padding:20px;
+border-radius:10px;
+}
+
+#chatlog{
+height:150px;
+overflow:auto;
+background:#0f172a;
+padding:10px;
+margin-bottom:10px;
+font-family:monospace;
 }
 
 </style>
@@ -113,15 +127,10 @@ border-radius:10px;
 <div class="grid">
 
 <div class="card"><a href="/ai">🤖 AI</a></div>
-
 <div class="card"><a href="/network">🌐 Network</a></div>
-
 <div class="card"><a href="/tools">🛠 Tools</a></div>
-
 <div class="card"><a href="/projects">🚀 Projects</a></div>
-
 <div class="card"><a href="/notes">📓 Notes</a></div>
-
 <div class="card"><a href="https://github.com">💻 GitHub</a></div>
 
 </div>
@@ -129,9 +138,21 @@ border-radius:10px;
 <div class="monitor" id="monitor"></div>
 
 <div class="terminal">
-$ initializing huydq lab... <br>
+$ booting huydq system... <br>
 $ loading modules... <br>
-$ system ready <br>
+$ status: online <br>
+</div>
+
+<div class="chat">
+
+<h3>🤖 Mini AI Chat</h3>
+
+<div id="chatlog"></div>
+
+<input id="chatinput" placeholder="ask something..." style="width:70%">
+
+<button onclick="send()">Send</button>
+
 </div>
 
 <script>
@@ -149,16 +170,41 @@ setInterval(updateClock,1000);
 
 function fakeMonitor(){
 
-const cpu=(Math.random()*80+10).toFixed(1);
-
-const ram=(Math.random()*70+20).toFixed(1);
+const cpu=(Math.random()*70+20).toFixed(1);
+const ram=(Math.random()*60+30).toFixed(1);
+const net=(Math.random()*100).toFixed(1);
 
 document.getElementById("monitor").innerText=
-"CPU "+cpu+"% | RAM "+ram+"%";
+"CPU "+cpu+"% | RAM "+ram+"% | NET "+net+"kb/s";
 
 }
 
 setInterval(fakeMonitor,2000);
+
+function send(){
+
+const input=document.getElementById("chatinput");
+const log=document.getElementById("chatlog");
+
+const user=input.value;
+
+if(!user) return;
+
+log.innerHTML+="<div>> "+user+"</div>";
+
+let reply="I don't know 😆";
+
+if(user.includes("hello")) reply="hello human";
+if(user.includes("ai")) reply="AI experiments coming soon";
+if(user.includes("network")) reply="check network page";
+if(user.includes("who")) reply="this is huydq playground";
+
+log.innerHTML+="<div style='color:#22c55e'>AI: "+reply+"</div>";
+
+input.value="";
+log.scrollTop=log.scrollHeight;
+
+}
 
 </script>
 
