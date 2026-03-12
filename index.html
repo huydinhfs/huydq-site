@@ -1,69 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>HuyDQ Playground</title>
-<p>> welcome to my lab_</p>
+<title>HuyDQ Lab</title>
 
 <style>
+
 body{
-    background:#0f172a;
-    color:#e5e7eb;
-    font-family: monospace;
-    text-align:center;
-    padding-top:100px;
+margin:0;
+background:black;
+color:#00ff9c;
+font-family:monospace;
+text-align:center;
+overflow:hidden;
 }
 
 h1{
-    font-size:48px;
-    margin-bottom:10px;
+margin-top:120px;
+font-size:48px;
 }
 
 p{
-    color:#94a3b8;
+color:#00cc88;
 }
 
 .links{
-    margin-top:40px;
+margin-top:40px;
 }
 
 a{
-    display:inline-block;
-    margin:10px;
-    padding:12px 22px;
-    border:1px solid #334155;
-    border-radius:8px;
-    text-decoration:none;
-    color:#e5e7eb;
-    transition:0.2s;
+display:inline-block;
+margin:10px;
+padding:10px 20px;
+border:1px solid #00ff9c;
+color:#00ff9c;
+text-decoration:none;
+transition:0.2s;
 }
 
 a:hover{
-    background:#1e293b;
-    transform:translateY(-2px);
+background:#00ff9c;
+color:black;
 }
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h1>HuyDQ Playground</h1>
+<canvas id="matrix"></canvas>
 
-<p>Random experiments with tech</p>
+<h1>HuyDQ Lab</h1>
+
+<p id="typing"></p>
 
 <div class="links">
-
-<a href="#">Projects</a>
-
-<a href="#">AI Lab</a>
-
-<a href="#">Network</a>
-
-<a href="#">Notes</a>
-
-<a href="https://github.com">GitHub</a>
-
+<a href="#">projects</a>
+<a href="#">ai</a>
+<a href="#">network</a>
+<a href="#">notes</a>
+<a href="https://github.com">github</a>
 </div>
+
+<script>
+
+const text="initializing huydq lab...";
+let i=0;
+
+function type(){
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
+i++;
+setTimeout(type,70);
+}
+}
+
+type();
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
+
+const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+
+const drops=[];
+
+for(let x=0;x<columns;x++)
+drops[x]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#00ff9c";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text=letters.charAt(Math.floor(Math.random()*letters.length));
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,33);
+
+</script>
 
 </body>
 </html>
