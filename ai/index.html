@@ -1,1 +1,117 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI Chat</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+#chat{
+max-width:700px;
+margin:50px auto;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+}
+
+#messages{
+height:300px;
+overflow:auto;
+background:#0f172a;
+padding:10px;
+margin-bottom:10px;
+text-align:left;
+font-family:monospace;
+}
+
+input{
+width:70%;
+padding:10px;
+border:none;
+border-radius:5px;
+}
+
+button{
+padding:10px;
+background:#22c55e;
+border:none;
+border-radius:5px;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>AI Playground</h1>
+
+<div id="chat">
+
+<div id="messages"></div>
+
+<input id="msg" placeholder="Ask something...">
+
+<button onclick="send()">Send</button>
+
+</div>
+
+<script>
+
+const API_KEY="PASTE_YOUR_OPENAI_KEY_HERE";
+
+async function send(){
+
+const input=document.getElementById("msg");
+const messages=document.getElementById("messages");
+
+const text=input.value;
+
+messages.innerHTML+="<div>> "+text+"</div>";
+
+input.value="";
+
+const res=await fetch("https://api.openai.com/v1/chat/completions",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+API_KEY
+},
+
+body:JSON.stringify({
+
+model:"gpt-4o-mini",
+
+messages:[
+{role:"user",content:text}
+]
+
+})
+
+});
+
+const data=await res.json();
+
+const reply=data.choices[0].message.content;
+
+messages.innerHTML+="<div style='color:#22c55e'>AI: "+reply+"</div>";
+
+messages.scrollTop=messages.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
